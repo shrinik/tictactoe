@@ -9,7 +9,6 @@ type Position struct {
 	Row int
 	Col int
 }
-
 var board = [3][3]string{{"_", "_", "_"}, {"_", "_", "_"}, {"_", "_", "_"}}
 
 func main () {
@@ -19,8 +18,7 @@ func main () {
 	// Continue game until the game is won or drawn
 	player := "X"
 	for winningMove, moves := false, 1; winningMove == false; {
-
-		ProcessPlayerInput(player)
+		GetInput(player)
 		ShowBoard()
 
 		winningMove = ScoreGame(player)
@@ -51,7 +49,7 @@ func Intro() {
 	fmt.Println("---------------------------------------------------------------")
 }
 
-func ProcessPlayerInput (player string) {
+func GetInput (player string) {
 	var inputStr string
 	position := Position{0, 0}
 	fmt.Printf("Player %s to play\n", player)
@@ -74,13 +72,17 @@ func ProcessPlayerInput (player string) {
 			continue
 		}
 
+		// Adjust position to match array index which starts from zero
+		position.Row = position.Row - 1
+		position.Col = position.Col - 1
+
 		// Check if this position is already in use
-		if (board[position.Row - 1][position.Col - 1] == "X" ||
-				board[position.Row - 1][position.Col - 1] == "O") {
+		if (board[position.Row][position.Col] == "X" ||
+				board[position.Row][position.Col] == "O") {
 			fmt.Println("This board position already has a value. Please try again")
 			isValidInput = false
 		} else {
-			board[position.Row - 1][position.Col - 1] = player
+			board[position.Row][position.Col] = player
 			isValidInput = true
 		}
 	}
@@ -100,7 +102,7 @@ func ValidateInput (inputStr string)  (bool, string, int) {
 }
 
 func ShowBoard() {
-	fmt.Printf("%s %s %s\n%s %s %s\n%s %s %s\n\n\n",
+	fmt.Printf("\n%s %s %s\n%s %s %s\n%s %s %s\n\n",
 		board[0][0], board[0][1], board[0][2],
 		board[1][0], board[1][1], board[1][2],
 		board[2][0], board[2][1], board[2][2])
