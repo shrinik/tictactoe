@@ -57,7 +57,7 @@ func ProcessPlayerInput (player string) {
 	fmt.Printf("Player %s to play\n", player)
 
 	for isValidInput, errmsg := false, ""; isValidInput == false; {
-
+		isValidInput = false
 		fmt.Printf("Enter row number: ")
 		fmt.Scanf("%s\n", &inputStr)
 		isValidInput, errmsg, position.Row = ValidateInput(inputStr)
@@ -78,6 +78,7 @@ func ProcessPlayerInput (player string) {
 		if (board[position.Row - 1][position.Col - 1] == "X" ||
 				board[position.Row - 1][position.Col - 1] == "O") {
 			fmt.Println("This board position already has a value. Please try again")
+			isValidInput = false
 		} else {
 			board[position.Row - 1][position.Col - 1] = player
 			isValidInput = true
