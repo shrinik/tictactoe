@@ -9,35 +9,32 @@ var board = [3][3]string{{"_", "_", "_"}, {"_", "_", "_"}, {"_", "_", "_"}}
 func main () {
 	Intro()
 	ShowBoard()
-	var player string
-	var draw bool
 	
 	// Continue game until the game is won or drawn
-	for gameover, round := false, 0; gameover == false; {		
-		round++
-		player = "X"
+	player := "X"
+	for winningMove, moves := false, 1; winningMove == false; {		
+	
 		ProcessPlayerInput(player)		
-		gameover = ScoreGame(player)
-		ShowBoard()
+		ShowBoard()		
 		
-		if gameover {
+		winningMove = ScoreGame(player)
+		if winningMove {
+			fmt.Printf("%s is the Winner!! Congratulations!", player)
 			break
-		} else if round == 5 {
-			draw = true
-			break
+		}	
+		
+		if player == "X"	{
+			player = "O"
+		} else {
+			player = "X"
 		}
 		
-		player = "O"
-		ProcessPlayerInput(player)
-		gameover = ScoreGame(player)
-		ShowBoard()
-		
-	}
-	if draw {
-		fmt.Println("Game was a draw")
-	} else {
-		fmt.Printf("%s is the Winner!! Congratulations!", player)
-	}
+		moves++		
+		if moves == 10 {
+			fmt.Println("Game was a draw")
+			break
+		}
+	}	
 }
 
 func Intro() {
@@ -45,6 +42,7 @@ func Intro() {
 	fmt.Println("Welcome to Tic Tac Toe using Golang!")
 	fmt.Println("Developed by Shrinivas Kudva")
 	fmt.Println("To play, enter the grid position for X or O.")
+	fmt.Println("To input a value in the middle of the grid, enter row as 2 and column as 2")
 	fmt.Println("---------------------------------------------------------------------------")
 }
 
@@ -58,7 +56,7 @@ func ProcessPlayerInput (player string) {
 		fmt.Scanf("%d\n", &row)
 		fmt.Printf("Enter column number: ")	
 		fmt.Scanf("%d\n", &column)
-		
+				
 		// Check if this position is already in use
 		if (board[row - 1][column - 1] == "X" || board[row - 1][column - 1] == "O") {
 			fmt.Println("This position was already used. Please try again")
