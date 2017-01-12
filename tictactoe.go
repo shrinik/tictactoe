@@ -9,9 +9,10 @@ type Position struct {
 	Row int
 	Col int
 }
+
 var board = [3][3]string{{"_", "_", "_"}, {"_", "_", "_"}, {"_", "_", "_"}}
 
-func main () {
+func main() {
 	Intro()
 	ShowBoard()
 
@@ -27,7 +28,7 @@ func main () {
 			break
 		}
 
-		if player == "X"	{
+		if player == "X" {
 			player = "O"
 		} else {
 			player = "X"
@@ -49,7 +50,7 @@ func Intro() {
 	fmt.Println("---------------------------------------------------------------")
 }
 
-func GetInput (player string) {
+func GetInput(player string) {
 	var inputStr string
 	position := Position{0, 0}
 	fmt.Printf("Player %s to play\n", player)
@@ -59,7 +60,7 @@ func GetInput (player string) {
 		fmt.Printf("Enter row number: ")
 		fmt.Scanf("%s\n", &inputStr)
 		isValidInput, errmsg, position.Row = ValidateInput(inputStr)
-		if (!isValidInput) {
+		if !isValidInput {
 			fmt.Println(errmsg + " Please try again.")
 			continue
 		}
@@ -67,7 +68,7 @@ func GetInput (player string) {
 		fmt.Printf("Enter column number: ")
 		fmt.Scanf("%s\n", &inputStr)
 		isValidInput, errmsg, position.Col = ValidateInput(inputStr)
-		if (!isValidInput) {
+		if !isValidInput {
 			fmt.Println(errmsg + " Please try again.")
 			continue
 		}
@@ -77,8 +78,8 @@ func GetInput (player string) {
 		position.Col = position.Col - 1
 
 		// Check if this position is already in use
-		if (board[position.Row][position.Col] == "X" ||
-				board[position.Row][position.Col] == "O") {
+		if board[position.Row][position.Col] == "X" ||
+			board[position.Row][position.Col] == "O" {
 			fmt.Println("This board position already has a value. Please try again")
 			isValidInput = false
 		} else {
@@ -88,16 +89,16 @@ func GetInput (player string) {
 	}
 }
 
-func ValidateInput (inputStr string)  (bool, string, int) {
+func ValidateInput(inputStr string) (bool, string, int) {
 	intVal, err := strconv.Atoi(inputStr)
 	if err != nil {
 		return false, err.Error(), -1
 	}
 	switch {
-		case (intVal < 1 || intVal > 3):
-			return false, "Enterd value should be between 1 and 3.", -1
-		default:
-			return true, "", intVal
+	case intVal < 1 || intVal > 3:
+		return false, "Enterd value should be between 1 and 3.", -1
+	default:
+		return true, "", intVal
 	}
 }
 
@@ -111,48 +112,48 @@ func ShowBoard() {
 func ScoreGame(player string) bool {
 	var row1, row2, row3, col1, col2, col3, diag1, diag2 int
 
-	for row:=0; row < 3; row++ {
-		for col:=0; col < 3; col++ {
+	for row := 0; row < 3; row++ {
+		for col := 0; col < 3; col++ {
 			switch {
-				case row == 0 && col == 0 && board[row][col] == player:
-					row1++
-					col1++
-					diag1++
-				case row == 0 && col == 1 && board[row][col] == player:
-					row1++
-					col2++
-				case row == 0 && col == 2 && board[row][col] == player:
-					row1++
-					col3++
-					diag2++
-				case row == 1 && col == 0 && board[row][col] == player:
-					row2++
-					col1++
-				case row == 1 && col == 1 && board[row][col] == player:
-					row2++
-					col2++
-					diag1++
-					diag2++
-				case row == 1 && col == 2 && board[row][col] == player:
-					row2++
-					col3++
-				case row == 2 && col == 0 && board[row][col] == player:
-					row3++
-					col1++
-					diag2++
-				case row == 2 && col == 1 && board[row][col] == player:
-					row3++
-					col2++
-				case row == 2 && col == 2 && board[row][col] == player:
-					row3++
-					col3++
-					diag1++
+			case row == 0 && col == 0 && board[row][col] == player:
+				row1++
+				col1++
+				diag1++
+			case row == 0 && col == 1 && board[row][col] == player:
+				row1++
+				col2++
+			case row == 0 && col == 2 && board[row][col] == player:
+				row1++
+				col3++
+				diag2++
+			case row == 1 && col == 0 && board[row][col] == player:
+				row2++
+				col1++
+			case row == 1 && col == 1 && board[row][col] == player:
+				row2++
+				col2++
+				diag1++
+				diag2++
+			case row == 1 && col == 2 && board[row][col] == player:
+				row2++
+				col3++
+			case row == 2 && col == 0 && board[row][col] == player:
+				row3++
+				col1++
+				diag2++
+			case row == 2 && col == 1 && board[row][col] == player:
+				row3++
+				col2++
+			case row == 2 && col == 2 && board[row][col] == player:
+				row3++
+				col3++
+				diag1++
 			}
 		}
 	}
 
-	if (row1 == 3 || row2 == 3 || row3 == 3 || col1 == 3 || col2 == 3 || col3 == 3 ||
-		diag1 == 3 || diag2 == 3) {
+	if row1 == 3 || row2 == 3 || row3 == 3 || col1 == 3 || col2 == 3 || col3 == 3 ||
+		diag1 == 3 || diag2 == 3 {
 		return true
 	}
 	return false
